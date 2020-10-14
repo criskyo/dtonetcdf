@@ -1,6 +1,7 @@
 package com.dtonetcdf.Presentacion;
 
 import com.dtonetcdf.ListCellRenderer.MyCellRenderer;
+import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -126,23 +127,24 @@ public class Vista extends javax.swing.JFrame{
 
 
 
-
+                f.setLayout(null);
+                setLayout(null);
                 list = new JList<>(l1);
-                list.setBounds(10,10, 2300,500);
-                list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                list.setLayoutOrientation(JList.VERTICAL_WRAP);
+                list.setBounds(10,10, 500,500);
+                list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 list.setCellRenderer(new MyCellRenderer());
-                list.setAutoscrolls(true);
 
-                f.add(list);
-                f.setSize(2300,800);
 
-                f.setVisible(true);
+                add(list);
+                //f.setSize(1300,800);
+
+
                 JButton boton1;
-                boton1=new JButton("Finalizar");
-                boton1.setBounds(300,250,100,30);
+                boton1=new JButton("mostrar datos");
+                boton1.setBounds(600,600,100,30);
                 add(boton1);
                 boton1.addActionListener(this::actionPerformed);
+                setVisible(true);
 
 
 
@@ -150,20 +152,59 @@ public class Vista extends javax.swing.JFrame{
             } catch (IOException ioe) {
                 System.out.println("trying to open " + picker.getSelectedFile().getAbsolutePath().toString()+ ioe);
             } finally {
-                if (null != file) try {
-                    file.close();
-                } catch (IOException ioe) {
+                /*if (null != file)
+                    try {
+                   // file.close();
+               // } catch (IOException ioe) {
                     System.out.println("trying to close " + picker.getSelectedFile().getAbsolutePath().toString()+ ioe);
-                }
-            }
+               // }
+            */}
         }
         repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
         System.out.println("test");
+        Variable vars =list.getSelectedValue();
+        System.out.println("variables " + vars);
+        JTextArea jt;
+        jt = new JTextArea("test ",10000, 10000);
 
+        try {
+
+            //jt.setText(vars.read().toString());
+
+           //System.out.println("var "+vars.read());
+            //for (int i = 0; i < 100; i++) {
+                Array array=vars.read();
+                System.out.println(" array "+array.getSize());
+                //jt.setText();
+            //}
+            System.out.println("var "+vars.read().getSize());
+       } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
+        JFrame f = new JFrame("Datos");
+        jt.setBounds(10,10,100,30);
+        //JPanel p = new JPanel();
+        JButton boton1;
+        boton1=new JButton("mostrar datos");
+        boton1.setBounds(600,600,100,30);
+        f.add(boton1);
+        //p.add(jt);
+        f.add(jt);
+
+
+       // f.add(jt);
+
+        setLayout(null);
+        f.setLayout(null);
+        f.setSize(800,800);
+
+
+        f.setVisible(true);
+        f.show();
+    }
     }
 
 

@@ -10,7 +10,7 @@ public class Modelo {
     private Vista paint;
 
     public void iniciar() {
-        getVista().setSize(800, 600);
+        getVista().setSize(1800, 900);
         getVista().setVisible(true);
 
     }
