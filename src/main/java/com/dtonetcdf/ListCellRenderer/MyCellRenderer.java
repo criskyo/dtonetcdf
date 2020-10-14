@@ -16,7 +16,7 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<Variable>
     @Override
     public Component getListCellRendererComponent(JList<? extends Variable> list, Variable value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        String text=" " + value.getName() + " (Tipo: " + value.getDataType().name() + ", Dimensiones: " + value.getDimensionsString() + ", Tamaño:";
+        String text=value.getDescription() +" " + value.getName() + " (Tipo: " + value.getDataType().name() + ", Dimensiones: " + value.getDimensionsString() + ", Tamaño:";
         int [] size = value.getShape();
         for(int i=0; i<size.length;++i){
 
@@ -25,6 +25,7 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<Variable>
 
         text = text +")";
         setText(text);
+
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());

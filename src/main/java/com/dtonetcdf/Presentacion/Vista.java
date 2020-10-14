@@ -2,12 +2,16 @@ package com.dtonetcdf.Presentacion;
 
 import com.dtonetcdf.ListCellRenderer.MyCellRenderer;
 import ucar.ma2.Array;
+import ucar.ma2.InvalidRangeException;
+import ucar.nc2.NCdumpW;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 public class Vista extends javax.swing.JFrame{
@@ -98,21 +102,32 @@ public class Vista extends javax.swing.JFrame{
                 List<Variable> vars = file.getVariables();
                 System.out.println("Total de variables "+vars.size());
                 JFrame f= new JFrame();
+
+                //////
+                String data[][]={ {"101","Amit","670000"},
+                        {"102","Jai","780000"},
+                        {"101","Sachin","700000"}};
+                String column[]={"ID","NAME","SALARY"};
+                JTable jt=new JTable(data,column);
+
+                //////
+
+
                 DefaultListModel<Variable> l1 = new DefaultListModel<>();
-                //DefaultListModel<String> l1 = new DefaultListModel<>();
+
                 for( Variable var: vars){
                     try {
 
 
                         System.out.print("  Nombre: " + var.getName() + " (Tipo: " + var.getDataType().name() + ", Dimensiones: " + var.getDimensionsString() + ", Tamaño:");
-                        String text="  Nombre: " + var.getName() + " (Tipo: " + var.getDataType().name() + ", Dimensiones: " + var.getDimensionsString() + ", Tamaño:";
+
                         int [] size = var.getShape();
                         for(int i=0; i<size.length;++i){
                             System.out.print(" " +size[i]);
-                            text = text + " " +size[i];
+
                         }
                         System.out.println(")");
-                        text = text +")";
+
                         //System.out.println("ranges "+var.getRanges());
                         //System.out.println("read "+var.read());
 
@@ -174,23 +189,33 @@ public class Vista extends javax.swing.JFrame{
 
             //jt.setText(vars.read().toString());
 
-           //System.out.println("var "+vars.read());
+                //Array data = vars.read("0:2:1, 0:19:1");
+            Array data = vars.read();
+            StringWriter out    = new StringWriter();
+            PrintWriter writerObj = new PrintWriter(out);
+            NCdumpW.printArray(data, vars.getName(),
+                    writerObj, null);
+
+            //System.out.println("var "+vars.read());
             //for (int i = 0; i < 100; i++) {
-                Array array=vars.read();
-                System.out.println(" array "+array.getSize());
-                //jt.setText();
+                //Array array=vars.read();
+               // System.out.println(" array "+data.getSize());
+                jt.setText(out.toString());
             //}
-            System.out.println("var "+vars.read().getSize());
+           // System.out.println("var "+vars.read().getSize());
        } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+       /*   catch (InvalidRangeException invalidRangeException) {
+        invalidRangeException.printStackTrace();
+    }*/
         JFrame f = new JFrame("Datos");
-        jt.setBounds(10,10,100,30);
+        jt.setBounds(10,10,1200,700);
         //JPanel p = new JPanel();
-        JButton boton1;
+        /*JButton boton1;
         boton1=new JButton("mostrar datos");
         boton1.setBounds(600,600,100,30);
-        f.add(boton1);
+        f.add(boton1);*/
         //p.add(jt);
         f.add(jt);
 
@@ -199,7 +224,7 @@ public class Vista extends javax.swing.JFrame{
 
         setLayout(null);
         f.setLayout(null);
-        f.setSize(800,800);
+        f.setSize(1300,800);
 
 
         f.setVisible(true);
