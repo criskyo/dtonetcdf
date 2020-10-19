@@ -1,4 +1,4 @@
-package com.dtonetcdf.persistencia;
+package com.dtonetcdf.Persistencia;
 
 import ucar.nc2.NetcdfFile;
 

@@ -1,7 +1,7 @@
 package com.dtonetcdf.Logica;
 
-import com.dtonetcdf.persistencia.ArchivoDTO;
-import com.dtonetcdf.persistencia.VariableDTO;
+import com.dtonetcdf.Persistencia.ArchivoDTO;
+import com.dtonetcdf.Persistencia.VariableDTO;
 import ucar.nc2.NetcdfFile;
 
 import java.io.IOException;
