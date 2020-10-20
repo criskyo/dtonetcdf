@@ -6,12 +6,10 @@
 
 package com.dtonetcdf.Presentacion;
 
-import com.dtonetcdf.ListCellRenderer.MyCellRenderer;
 import com.dtonetcdf.ListCellRenderer.NetcdfTableModel;
 import com.dtonetcdf.Logica.Sistema;
 
 import ucar.nc2.NetcdfFile;
-import ucar.nc2.Variable;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -43,12 +41,6 @@ public class Modelo {
         return vistaDatos;
     }
 
-   /* public VistaVariables getVistaVariables() {
-        if (vistaVariables == null) {
-            vistaVariables = new VistaVariables(this);
-        }
-        return vistaVariables;
-    }*/
 
     public Sistema getSistema() {
         if (sistema == null) {
