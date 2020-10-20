@@ -2,7 +2,6 @@ package com.dtonetcdf.Presentacion;
 
 import ucar.nc2.Variable;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 
 public class Vista extends javax.swing.JFrame {
@@ -14,8 +13,9 @@ public class Vista extends javax.swing.JFrame {
     private JFileChooser picker;
     private final Modelo modelo;
     private ControlVista control;
-    private JList<Variable> list;
+    private JTable tabla;
     private DefaultListModel<Variable> l1;
+    private JScrollPane jScrollPane;
 
 
 
@@ -63,7 +63,7 @@ public class Vista extends javax.swing.JFrame {
         getMostrarDatos().setBounds(600, 600, 100, 30);
 
         getMostrarDatos().addActionListener(getControl());
-
+        setjScrollPane(new JScrollPane(tabla));
 
     }
 
@@ -80,12 +80,12 @@ public class Vista extends javax.swing.JFrame {
         this.picker = picker;
     }
 
-    public JList<Variable> getList() {
-        return list;
+    public JTable getTabla() {
+        return tabla;
     }
 
-    public void setList(JList<Variable> list) {
-        this.list = list;
+    public void setTabla(JTable tabla) {
+        this.tabla = tabla;
     }
 
     public DefaultListModel<Variable> getL1() {
@@ -111,6 +111,14 @@ public class Vista extends javax.swing.JFrame {
 
     public void setMenuAbrir(JMenuItem menuAbrir) {
         this.menuAbrir = menuAbrir;
+    }
+
+    public JScrollPane getjScrollPane() {
+        return jScrollPane;
+    }
+
+    public void setjScrollPane(JScrollPane jScrollPane) {
+        this.jScrollPane = jScrollPane;
     }
 }
 

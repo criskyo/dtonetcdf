@@ -38,6 +38,7 @@ public class Sistema {
 
     public NetcdfFile abrirarchivo() throws IOException {
         getArchivoDTO().setNetcdfFile(NetcdfFile.open(getArchivoDTO().getRuta()));
+        getArchivoDTO().setVariables(getArchivoDTO().getNetcdfFile().getVariables());
         return getArchivoDTO().getNetcdfFile();
     }
 

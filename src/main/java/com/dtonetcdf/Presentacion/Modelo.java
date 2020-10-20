@@ -7,6 +7,7 @@
 package com.dtonetcdf.Presentacion;
 
 import com.dtonetcdf.ListCellRenderer.MyCellRenderer;
+import com.dtonetcdf.ListCellRenderer.NetcdfTableModel;
 import com.dtonetcdf.Logica.Sistema;
 
 import ucar.nc2.NetcdfFile;
@@ -20,6 +21,7 @@ public class Modelo {
     private Vista vista;
 
     private VistaDatos vistaDatos;
+    private VistaVariables vistaVariables;
 
     private Sistema sistema;
 
@@ -43,6 +45,13 @@ public class Modelo {
         return vistaDatos;
     }
 
+    public VistaVariables getVistaVariables() {
+        if (vistaVariables == null) {
+            vistaVariables = new VistaVariables(this);
+        }
+        return vistaVariables;
+    }
+
     public Sistema getSistema() {
         if (sistema == null) {
             sistema = new Sistema();
@@ -52,9 +61,7 @@ public class Modelo {
 
 
     public void mostrarDatos(){
-        getSistema().getVariableDTO().setVarSeleccionada(getVista().getList().getSelectedValue());
-        getVistaDatos().getjTextArea().setText(getSistema().getVariableDTO().getImprimible());
-        getVistaDatos().setVisible(true);
+
 
     }
 
@@ -64,27 +71,32 @@ public class Modelo {
             NetcdfFile file = null;
             try {
                 getSistema().getArchivoDTO().setRuta(getVista().getPicker().getSelectedFile().getAbsolutePath().toString());
-                for (Variable var :  getSistema().abrirarchivo().getVariables()) {
-                    try {
-                        getVista().getL1().addElement(var);
-                    } catch (Exception es) {
+                getVistaVariables().setTabla(new JTable());
+                NetcdfTableModel netcdfTableModel= new NetcdfTableModel(getSistema().abrirarchivo().getVariables());
+                getVistaVariables().getTabla().setModel(netcdfTableModel);
+                getVistaVariables().getTabla().setBounds(30, 40, 200, 300);
+                getVistaVariables().getTabla().addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        if(evt.getClickCount() ==2)
+                        getSistema().getVariableDTO().setVarSeleccionada(getSistema().getArchivoDTO().getVariables().get(getVistaVariables().getTabla().getSelectedRow()));
+                        getVistaDatos().getjTextArea().setText(getSistema().getVariableDTO().getImprimible());
+                        getVistaDatos().setVisible(true);
 
                     }
-                }
-                getVista().setLayout(null);
-                getVista().setList(new JList<>(getVista().getL1()));
-                getVista().getList().setBounds(10, 10, 500, 500);
-                getVista().getList().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                getVista().getList().setCellRenderer(new MyCellRenderer());
-                getVista().add(getVista().getList());
-                getVista().add(getVista().getMostrarDatos());
-                getVista().setVisible(true);
+                });
+                getVistaVariables().setjScrollPane(new JScrollPane(getVistaVariables().getTabla()));
+                getVistaVariables().add(getVistaVariables().getjScrollPane());
+//                getVistaVariables().add(getVistaVariables().getjScrollPane().add(getVistaVariables().getTabla()));
+                getVistaVariables().setVisible(true);
 
             } catch (IOException ioe) {
                 System.out.println("trying to open " + getVista().getPicker().getSelectedFile().getAbsolutePath().toString() + ioe);
             }
         }
         getVista().repaint();
+        getVistaDatos().repaint();
+        getVistaVariables().repaint();
 
 
     }
